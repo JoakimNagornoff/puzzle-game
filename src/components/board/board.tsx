@@ -5,9 +5,14 @@ import { PuzzleItem, PuzzleItemEmpty } from '../puzzleItem/puzzleItem.tsx'
 
 const Board = () => {
   const [positions, setPositions] = useState<(number | null)[]>(() => {
-    const numbers = [...Array(14).keys()].map(n => n + 1);
+    const numbers = [...Array(14
+    ).keys()].map(n => n + 1);
     return [...numbers, null] as (number | null)[];
   });
+
+  const initialPositions = [...Array(14).keys()].map(n => n + 1);
+  const [savedInitialPositions] = useState<(number | null)[]>(initialPositions);
+  const [hasGameStarted, setGameStarted] = useState<boolean>(false)
 
   const emptyIndex = positions.indexOf(null);
   const rowSize = 5;
@@ -19,6 +24,7 @@ const Board = () => {
       shuffledPositions.sort(() => Math.random() - 0.5);
       return shuffledPositions;
     })
+    setGameStarted(true)
   }
 
 
@@ -30,14 +36,24 @@ const Board = () => {
       clickedIndex === emptyIndex + rowSize // Below
     );
   }
+  const checkCompletion = (newPositions: (number | null)[]) => {
+    const positionsWithoutNull = newPositions.filter(pos => pos !== null);
+    const isComplete = JSON.stringify(positionsWithoutNull) === JSON.stringify(savedInitialPositions);
+    if (isComplete) {
+      alert("Congratulations! You've completed the puzzle!");
+    }
+  };
 
   const handleTileClick = (index: number) => {
+    if (!hasGameStarted) {
+      alert("Start the game with the Shuffle button!");
+      return;
+    }
     if (!isValidMove(index)) return
 
     const newPositions = [...positions];
-
     [newPositions[index], newPositions[emptyIndex]] = [newPositions[emptyIndex], newPositions[index]];
-
+    checkCompletion(newPositions)
     setPositions(newPositions);
   }
 
