@@ -1,11 +1,10 @@
 import React from 'react';
+import Board from './components/board/board.tsx';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>hej</p>
-      </header>
+      <Board />
     </div>
   );
 }
