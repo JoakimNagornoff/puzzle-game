@@ -18,7 +18,7 @@
 }
 
 .empty {
-  background-color: transparent;
-  border: 5px solid transparent;
+  background-color: #ccc;
+  border: 2px solid transparent;
   cursor: default;
 }
